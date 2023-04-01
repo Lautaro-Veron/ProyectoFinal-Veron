@@ -1,0 +1,46 @@
+.productos li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  .productos li img {
+    max-width: 100px;
+    margin-right: 10px;
+  }
+
+  body {
+    background-color: #fff;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+
+  .productos ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .productos li {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .carrito ul {
+    margin-top: 20px;
+  }
+  
+  .carrito li {
+    margin-bottom: 10px;
+  }
+  
+  .carrito p {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
