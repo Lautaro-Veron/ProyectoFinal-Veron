@@ -19,8 +19,17 @@ fetch(apiUrl)
       button.textContent = "Agregar al carrito";
       button.addEventListener("click", () => {
         // Agregar el producto al carrito
-        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-        carrito.push(producto);
+        const carrito = JSON.parse(localStorage.getItem("carrito")) || {};
+        if (carrito[producto.id]) {
+          // El producto ya está en el carrito, actualizar la cantidad
+          carrito[producto.id].cantidad += 1;
+        } else {
+          // El producto no está en el carrito, agregarlo
+          carrito[producto.id] = {
+            ...producto,
+            cantidad: 1
+          };
+        }
         localStorage.setItem("carrito", JSON.stringify(carrito));
         actualizarCarrito();
       });
@@ -37,21 +46,21 @@ function actualizarCarrito() {
   const listaCarrito = document.getElementById("lista-carrito");
   listaCarrito.innerHTML = "";
   let totalCarrito = 0;
-  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  carrito.forEach((producto, index) => {
+  const carrito = JSON.parse(localStorage.getItem("carrito")) || {};
+  Object.values(carrito).forEach((producto, index) => {
     const li = document.createElement("li");
-    li.textContent = `${producto.title} - $${producto.price}`;
+    li.textContent = `${producto.title} x ${producto.cantidad} - $${producto.price * producto.cantidad}`;
     const button = document.createElement("button");
     button.textContent = "Eliminar";
     button.addEventListener("click", () => {
       // Eliminar el producto del carrito
-      carrito.splice(index, 1);
+      delete carrito[producto.id];
       localStorage.setItem("carrito", JSON.stringify(carrito));
       actualizarCarrito();
     });
     li.appendChild(button);
     listaCarrito.appendChild(li);
-    totalCarrito += producto.price;
+    totalCarrito += producto.price * producto.cantidad;
   });
   const totalCarritoSpan = document.getElementById("total-carrito");
   totalCarritoSpan.textContent = totalCarrito.toFixed(2);
